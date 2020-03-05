@@ -216,8 +216,8 @@ namespace Bastet {
 		return q;
 	}
 
-	BlockType NoPreviewBlockChooser::GetNext(const Well *  well,
-											 const Queue & q) {
+	BlockType NoPreviewBlockChooser::GetNext(const Well * well,
+											 const Queue & /*q*/) {
 		assert(q.empty());
 		boost::array<long, nBlockTypes> finalScores;
 		for (size_t t = 0; t < nBlockTypes; ++t) {

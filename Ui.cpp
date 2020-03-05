@@ -423,7 +423,8 @@ namespace Bastet {
 		}
 	}
 
-	void Ui::RedrawWell(const Well * w, BlockType b, const BlockPosition & p) {
+	void Ui::RedrawWell(const Well * /*w*/, BlockType b,
+						const BlockPosition & p) {
 		for (int i = 0; i < WellWidth; ++i)
 			for (int j = 0; j < WellHeight; ++j) {
 				Dot d = {i, j};

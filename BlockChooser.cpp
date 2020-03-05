@@ -35,7 +35,8 @@ namespace Bastet {
 		return q;
 	}
 
-	BlockType RandomBlockChooser::GetNext(const Well * well, const Queue & q) {
+	BlockType RandomBlockChooser::GetNext(const Well * /*well*/,
+										  const Queue & /*q*/) {
 		return BlockType(random() % nBlockTypes);
 	}
 
