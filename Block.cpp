@@ -184,7 +184,7 @@ namespace Bastet {
 	//     return blocks[b].GetDots(position,o);
 	//   }
 	Color GetColor(BlockType b) { return blocks[b].GetColor(); }
-	char	GetChar(BlockType b) { return "OIZTJSL"[int(b)]; }
+	char  GetChar(BlockType b) { return "OIZTJSL"[int(b)]; }
 
 	size_t hash_value(const Dot & d) { return (d.x + 5) * 32 + d.y; }
 }  // namespace Bastet
