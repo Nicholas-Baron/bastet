@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(bastet)
+project(neobastet)
 
 find_package(Curses)
 find_package(Boost)
 
-add_executable(tetris 
+add_executable(nbastet
     main.cpp 
     BastetBlockChooser.cpp
     BlockChooser.cpp
@@ -16,7 +16,7 @@ add_executable(tetris
     Well.cpp
     )
 
-set_property(TARGET tetris PROPERTY CXX_STANDARD 11)
-target_link_libraries(tetris PUBLIC ${CURSES_LIBRARIES} boost_program_options)
-target_include_directories(tetris PUBLIC ${CURSES_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
-target_compile_options(tetris PRIVATE -Wall -Wextra -O)
+set_property(TARGET nbastet PROPERTY CXX_STANDARD 11)
+target_link_libraries(nbastet PUBLIC ${CURSES_LIBRARIES} boost_program_options)
+target_include_directories(nbastet PUBLIC ${CURSES_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
+target_compile_options(nbastet PRIVATE -Wall -Wextra -O)
