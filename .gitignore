@@ -4,3 +4,4 @@ Test
 *.o
 *~
 build/*
+cmake-build-debug/*

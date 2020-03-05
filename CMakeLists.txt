@@ -19,3 +19,4 @@ add_executable(tetris
 set_property(TARGET tetris PROPERTY CXX_STANDARD 11)
 target_link_libraries(tetris PUBLIC ${CURSES_LIBRARIES} boost_program_options)
 target_include_directories(tetris PUBLIC ${CURSES_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
+target_compile_options(tetris PRIVATE -Wall -Wextra -O)
