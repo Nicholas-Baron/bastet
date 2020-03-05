@@ -27,17 +27,13 @@
 
 namespace Bastet {
 
-    // bogus score assigned to combinations which cause game over
-	static constexpr long GameOverScore
-		= -1000;  
+	// bogus score assigned to combinations which cause game over
+	static constexpr long GameOverScore = -1000;
 
 	//  declared in Well.hpp
-    // assigns a score to a position w + a number of extra
-    // lines deleted while getting there
-	long Evaluate(const Well * w,
-				  int		   extralines
-				  = 0);	
-						
+	// assigns a score to a position w + a number of extra
+	// lines deleted while getting there
+	long Evaluate(const Well * w, int extralines = 0);
 
 	typedef BlockPosition Vertex;
 

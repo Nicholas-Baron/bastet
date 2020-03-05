@@ -46,7 +46,7 @@ namespace Bastet {
 		~BorderedWindow();
 			 operator WINDOW *();  // returns the inner window
 		void RedrawBorder();
-		int GetMinX();	/// these are including border
+		int	 GetMinX();	 /// these are including border
 		int	 GetMinY();
 		int	 GetMaxX();
 		int	 GetMaxY();

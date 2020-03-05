@@ -62,7 +62,7 @@ namespace Bastet {
 			 int score,
 			 const std::string &
 				 scorer);  // returns position (1 to HowManyHighScores), -1 if
-						  // you don't make into the list
+						   // you don't make into the list
 	};
 
 	extern const std::string RcFileName;
