@@ -22,6 +22,9 @@ include depend
 $(PROGNAME): $(SOURCES:.cpp=.o) $(MAIN:.cpp=.o)
 	$(CXX) -ggdb -o $(PROGNAME) $(SOURCES:.cpp=.o) $(MAIN:.cpp=.o) $(LDFLAGS) 
 
+format:
+	clang-format-9 -i $(SOURCES) *.hpp
+
 clean:
 	rm -f $(SOURCES:.cpp=.o) $(TESTS:.cpp=.o) $(MAIN:.cpp=.o) $(PROGNAME)
 
