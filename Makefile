@@ -5,7 +5,7 @@ PROGNAME=bastet
 BOOST_PO?=-lboost_program_options
 LDFLAGS+=-lncurses $(BOOST_PO)
 #CXXFLAGS+=-ggdb -Wall
-CXXFLAGS+=-DNDEBUG -Wall
+CXXFLAGS+=-DNDEBUG -Wall -Wextra -std=c++11
 #CXXFLAGS+=-pg
 #LDFLAGS+=-pg
 
