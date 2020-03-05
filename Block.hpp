@@ -106,9 +106,9 @@ namespace Bastet {
 	extern BlockArray				   blocks;
 
 	// should be members, but BlockType is an enum...
-	//  const DotMatrix GetDots(BlockType b, Dot position, Orientation o);
-	const Color GetColor(BlockType b);
-	const char	GetChar(BlockType b);
+	//  DotMatrix GetDots(BlockType b, Dot position, Orientation o);
+	Color GetColor(BlockType b);
+	char  GetChar(BlockType b);
 
 }  // namespace Bastet
 

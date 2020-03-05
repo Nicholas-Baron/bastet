@@ -180,11 +180,11 @@ namespace Bastet {
 										  {0, 0},
 										  {1, 0}}}}})}};
 
-	//   const DotMatrix GetDots(BlockType b, Dot position, Orientation o){
+	//   DotMatrix GetDots(BlockType b, Dot position, Orientation o){
 	//     return blocks[b].GetDots(position,o);
 	//   }
-	const Color GetColor(BlockType b) { return blocks[b].GetColor(); }
-	const char	GetChar(BlockType b) { return "OIZTJSL"[int(b)]; }
+	Color GetColor(BlockType b) { return blocks[b].GetColor(); }
+	char	GetChar(BlockType b) { return "OIZTJSL"[int(b)]; }
 
 	size_t hash_value(const Dot & d) { return (d.x + 5) * 32 + d.y; }
 }  // namespace Bastet
