@@ -20,8 +20,6 @@
 #define BLOCK_HPP
 
 #include <curses.h>
-
-#include <boost/array.hpp>
 #include <array>
 
 namespace Bastet {
@@ -70,14 +68,12 @@ namespace Bastet {
 	enum BlockType {
 		O = 0, I = 1, Z = 2, T = 3, J = 4, S = 5, L = 6
 	};
-	static constexpr auto nBlockTypes   = 7;
+	static constexpr auto nBlockTypes = 7;
 	
 	struct Dot;
 	
-	// typedef boost::array<Dot, 4>       DotMatrix;    // the four dots occupied by a tetromino
-	using DotMatrix = std::array<Dot, 4>;
-	typedef boost::array<DotMatrix, 4> OrientationMatrix;    // the four orientations of a tetromino
-	
+	using DotMatrix = std::array<Dot, 4>;    // the four dots occupied by a tetromino
+	using OrientationMatrix = std::array<DotMatrix, 4>;   // the four orientations of a tetromino
 	
 	struct Dot {
 		int x;
@@ -137,8 +133,8 @@ namespace Bastet {
 		};
 	};
 	
-	typedef boost::array<BlockImpl, 7> BlockArray;
-	extern BlockArray                  blocks;
+	using BlockArray = std::array<BlockImpl, 7>;
+	extern BlockArray blocks;
 	
 	// should be members, but BlockType is an enum...
 	//  DotMatrix GetDots(BlockType b, Dot position, Orientation o);
