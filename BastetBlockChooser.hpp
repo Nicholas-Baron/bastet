@@ -41,7 +41,7 @@ namespace Bastet {
 	class WellVisitor {
 	   public:
 		virtual void Visit(BlockType b, const Well * well, Vertex v) = 0;
-		virtual ~WellVisitor() noexcept = default;
+		virtual ~WellVisitor() noexcept								 = default;
 	};
 
 	// for each block type, drops it (via a BestScoreVisitor) and sees which
