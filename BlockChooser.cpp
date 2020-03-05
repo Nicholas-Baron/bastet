@@ -22,12 +22,6 @@
 
 namespace Bastet {
 
-	BlockChooser::BlockChooser() {}
-	BlockChooser::~BlockChooser() {}
-
-	RandomBlockChooser::RandomBlockChooser() {}
-	RandomBlockChooser::~RandomBlockChooser() {}
-
 	Queue RandomBlockChooser::GetStartingQueue() {
 		Queue q;
 		q.push_back(BlockType(random() % nBlockTypes));
