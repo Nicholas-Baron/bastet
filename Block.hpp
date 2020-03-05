@@ -22,6 +22,7 @@
 #include <curses.h>
 
 #include <boost/array.hpp>
+#include <array>
 
 namespace Bastet {
 	
@@ -36,7 +37,7 @@ namespace Bastet {
 		Orientation(unsigned char o = 0) : _o(o) {
 		}
 		
-		explicit operator unsigned char() const {
+		operator unsigned char() const {
 			return _o;
 		}
 		
@@ -45,7 +46,7 @@ namespace Bastet {
 		}
 		
 		Orientation Next() const {
-			return _o + 1 & 3;
+			return (_o + 1) & 3;
 		}
 		
 		Orientation operator--() {
@@ -54,6 +55,10 @@ namespace Bastet {
 		
 		Orientation Prior() const {
 			return (_o - 1) & 3;
+		}
+		
+		friend bool operator==(const Orientation &lhs, const Orientation &rhs) noexcept {
+			return lhs._o == rhs._o;
 		}
 		
 		constexpr static size_t Number = 4;
@@ -69,8 +74,10 @@ namespace Bastet {
 	
 	struct Dot;
 	
-	typedef boost::array<Dot, 4>       DotMatrix;    // the four dots occupied by a tetromino
+	// typedef boost::array<Dot, 4>       DotMatrix;    // the four dots occupied by a tetromino
+	using DotMatrix = std::array<Dot, 4>;
 	typedef boost::array<DotMatrix, 4> OrientationMatrix;    // the four orientations of a tetromino
+	
 	
 	struct Dot {
 		int x;
@@ -116,9 +123,6 @@ namespace Bastet {
 	
 	public:
 		BlockImpl(Color c, const OrientationMatrix &m) : _matrix(m), _color(c) {
-		};
-		
-		~BlockImpl() {
 		};
 		
 		/**
