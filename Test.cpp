@@ -1,12 +1,12 @@
-#include <ios>
+#include <iostream>
 
 #include "BastetBlockChooser.hpp"
 #include "Well.hpp"
 
+int main() {
+
 using namespace Bastet;
 using namespace std;
-
-int main() {
 	Well *		  w = new Well;
 	BlockPosition p;
 	p.Drop(Z, w);
