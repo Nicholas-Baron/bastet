@@ -40,8 +40,9 @@ namespace Bastet {
 	// generic visitor that "does something" with a possible drop position
 	class WellVisitor {
 	   public:
-		virtual void Visit(BlockType b, const Well * well, Vertex v) = 0;
 		virtual ~WellVisitor() noexcept								 = default;
+
+		virtual void Visit(BlockType b, const Well * well, Vertex v) = 0;
 	};
 
 	// for each block type, drops it (via a BestScoreVisitor) and sees which
@@ -92,8 +93,8 @@ namespace Bastet {
 
 	class BastetBlockChooser : public BlockChooser {
 	   public:
-		BastetBlockChooser();
-		virtual ~BastetBlockChooser();
+		virtual ~BastetBlockChooser() noexcept = default;
+
 		virtual Queue	  GetStartingQueue();
 		virtual BlockType GetNext(const Well * well, const Queue & q);
 		/**
@@ -111,8 +112,7 @@ namespace Bastet {
 	// preview
 	class NoPreviewBlockChooser : public BlockChooser {
 	   public:
-		NoPreviewBlockChooser();
-		virtual ~NoPreviewBlockChooser();
+		virtual ~NoPreviewBlockChooser() noexcept = default;
 		virtual Queue	  GetStartingQueue();
 		virtual BlockType GetNext(const Well * well, const Queue & q);
 	};

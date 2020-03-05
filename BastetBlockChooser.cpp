@@ -60,10 +60,6 @@ namespace Bastet {
 		return score;
 	}
 
-	BastetBlockChooser::BastetBlockChooser() {}
-
-	BastetBlockChooser::~BastetBlockChooser() {}
-
 	Queue BastetBlockChooser::GetStartingQueue() {
 		Queue q;
 		// The first block is always I,J,L,T (cfr. Tetris guidelines, Bastet is
@@ -194,8 +190,6 @@ namespace Bastet {
 		}  // catches the exception which might be thrown by LockAndClearLines
 	}
 
-	NoPreviewBlockChooser::NoPreviewBlockChooser(){};
-	NoPreviewBlockChooser::~NoPreviewBlockChooser(){};
 	Queue NoPreviewBlockChooser::GetStartingQueue() {
 		Queue q;
 		// The first block is always I,J,L,T (cfr. Tetris guidelines, Bastet is
