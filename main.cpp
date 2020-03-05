@@ -31,7 +31,7 @@ using namespace std;
 using namespace boost;
 using namespace boost::assign;
 
-int main(int argc, char ** argv) {
+int main() {
 	Ui ui;
 	while (1) {
 		int choice = ui.MenuDialog(
