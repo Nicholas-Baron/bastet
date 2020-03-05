@@ -36,24 +36,24 @@ namespace Bastet {
 		Orientation(unsigned char o = 0) : _o(o) {
 		}
 		
-		operator unsigned char() const {
+		explicit operator unsigned char() const {
 			return _o;
 		}
 		
 		Orientation operator++() {
-			return (++_o & 3);
+			return ++_o & 3;
 		}
 		
 		Orientation Next() const {
-			return ((_o + 1) & 3);
+			return _o + 1 & 3;
 		}
 		
 		Orientation operator--() {
-			return (--_o & 3);
+			return --_o & 3;
 		}
 		
 		Orientation Prior() const {
-			return ((_o - 1) & 3);
+			return (_o - 1) & 3;
 		}
 		
 		constexpr static size_t Number = 4;
