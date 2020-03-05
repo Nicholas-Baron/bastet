@@ -38,27 +38,33 @@ namespace Bastet {
 
 		Orientation operator++() { return (++_o & 3); }
 		Orientation Next() const { return ((_o + 1) & 3); }
-		Orientation operator--() { return (--_o & 3); }
-		Orientation Prior() const { return ((_o - 1) & 3); }
-
+		
+		Orientation operator--() {
+			return (--_o & 3);
+		}
+		
+		Orientation Prior() const {
+			return ((_o - 1) & 3);
+		}
+		
 		constexpr static size_t Number = 4;
-
-	   private:
+	
+	private:
 		unsigned char _o;
 	};
-
-	enum BlockType { O = 0, I = 1, Z = 2, T = 3, J = 4, S = 5, L = 6 };
-	static constexpr size_t nBlockTypes = 7;
-
+	
+	enum BlockType {
+		O = 0, I = 1, Z = 2, T = 3, J = 4, S = 5, L = 6
+	};
+	static constexpr auto nBlockTypes = 7;
+	
 	struct Dot;
-
-	typedef boost::array<Dot, 4>
-		DotMatrix;	// the four dots occupied by a tetromino
-	typedef boost::array<DotMatrix, 4>
-		OrientationMatrix;	// the four orientations of a tetromino
-
+	
+	typedef boost::array<Dot, 4>       DotMatrix;    // the four dots occupied by a tetromino
+	typedef boost::array<DotMatrix, 4> OrientationMatrix;    // the four orientations of a tetromino
+	
 	struct Dot {
-		int	 x;
+		int     x;
 		int	 y;
 		bool IsValid() const {
 			return (y >= -2) && y < WellHeight && (x >= 0) && (x < WellWidth);

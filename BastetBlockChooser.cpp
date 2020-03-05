@@ -108,38 +108,41 @@ namespace Bastet {
 		for (size_t i = 0; i < nBlockTypes; ++i) {
 			// mvprintw(i,1,"%c: %d",GetChar(BlockType(i)),finalScores[i]);
 		}
-
+		
 		// the mainScores alone would give rise to many repeated blocks (e.g.,
 		// in the case in which only one type of block does not let you clear a
 		// line, you keep getting that). This is bad, since it would break the
 		// "plausibility" of the sequence you get. We need a correction.
-
+		
 		boost::array<long, nBlockTypes> temp(finalScores);
 		sort(temp.begin(), temp.end());
-
+		
 		// always returns the worst block if it's different from the last one
-		int worstblock = find(finalScores.begin(), finalScores.end(), temp[0])
-						 - finalScores.begin();
-		if (BlockType(worstblock) != q.front()) return BlockType(worstblock);
-
+		auto worstblock =
+			     find(finalScores.begin(), finalScores.end(), temp[0]) - finalScores.begin();
+		if (BlockType(worstblock) != q.front()) {
+			return BlockType(worstblock);
+		}
+		
 		// otherwise, returns the pos-th block, where pos is random
-		static const boost::array<int, nBlockTypes> blockPercentages
-			= {{80, 92, 98, 100, 100, 100, 100}};
-		int pos = find_if(blockPercentages.begin(), blockPercentages.end(),
-						  bind2nd(greater_equal<int>(), random() % 100))
-				  - blockPercentages.begin();
+		static const boost::array<int, nBlockTypes> blockPercentages = {{80, 92, 98, 100, 100, 100, 100}};
+		auto                                        pos              =
+			                                            find_if(blockPercentages.begin()
+			                                                    , blockPercentages.end(), bind2nd(
+					                                            greater_equal<int>(),
+					                                            random() % 100))
+			                                            - blockPercentages.begin();
 		assert(pos >= 0 && pos < nBlockTypes);
-
-		int chosenBlock
-			= find(finalScores.begin(), finalScores.end(), temp[pos])
-			  - finalScores.begin();
+		
+		auto chosenBlock =
+			     find(finalScores.begin(), finalScores.end(), temp[pos]) - finalScores.begin();
 		return BlockType(chosenBlock);
-
+		
 		// return
 		// BlockType(min_element(finalScores.begin(),finalScores.end())-finalScores.begin());
 		// return BlockType(random()%7);
 	}
-
+	
 	Searcher::Searcher(BlockType b, const Well * well, Vertex v,
 					   WellVisitor * visitor)
 		: _block(b), _well(well), _visitor(visitor) {
@@ -227,25 +230,27 @@ namespace Bastet {
 		}
 
 		// perturbes scores to randomize tie handling
-		BOOST_FOREACH (long & i, finalScores)
-			i += (random() % 100);
-
+		BOOST_FOREACH (long &i, finalScores) {
+						i += (random() % 100);
+					}
+		
 		// sorts
 		boost::array<long, nBlockTypes> temp(finalScores);
 		sort(temp.begin(), temp.end());
-
+		
 		// returns the pos-th block, where pos is random
-		static const boost::array<int, nBlockTypes> blockPercentages
-			= {{80, 92, 98, 100, 100, 100, 100}};
-		int pos = find_if(blockPercentages.begin(), blockPercentages.end(),
-						  bind2nd(greater_equal<int>(), random() % 100))
-				  - blockPercentages.begin();
+		static const boost::array<int, nBlockTypes> blockPercentages = {{80, 92, 98, 100, 100, 100, 100}};
+		auto                                        pos              =
+			                                            find_if(blockPercentages.begin()
+			                                                    , blockPercentages.end(), bind2nd(
+					                                            greater_equal<int>(),
+					                                            random() % 100))
+			                                            - blockPercentages.begin();
 		assert(pos >= 0 && pos < nBlockTypes);
-
-		int chosenBlock
-			= find(finalScores.begin(), finalScores.end(), temp[pos])
-			  - finalScores.begin();
+		
+		auto chosenBlock =
+			     find(finalScores.begin(), finalScores.end(), temp[pos]) - finalScores.begin();
 		return BlockType(chosenBlock);
 	}
-
+	
 }  // namespace Bastet
