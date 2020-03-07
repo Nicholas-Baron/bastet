@@ -52,8 +52,9 @@ namespace Bastet {
         }
 
         // adds a bonus for lower max height of the occupied blocks
-        int height = RealWellHeight;
-        BOOST_FOREACH (WellLine l, w->_well) {
+        auto height = RealWellHeight;
+        /*BOOST_FOREACH (WellLine l, w->_well)*/
+        for(auto l : w->_well){
             if (l.any()) break;
             height--;
         }
@@ -85,7 +86,7 @@ namespace Bastet {
         return q;
     }
 
-    boost::array<long, nBlockTypes> BastetBlockChooser::ComputeMainScores(
+    std::array<long, nBlockTypes> BastetBlockChooser::ComputeMainScores(
         const Well * well, BlockType currentBlock) {
         RecursiveVisitor visitor;
         Searcher(currentBlock, well, BlockPosition(), &visitor);
@@ -93,12 +94,13 @@ namespace Bastet {
     }
 
     BlockType BastetBlockChooser::GetNext(const Well * well, const Queue & q) {
-        boost::array<long, nBlockTypes> mainScores
+        auto mainScores
             = ComputeMainScores(well, q.front());
-        boost::array<long, nBlockTypes> finalScores = mainScores;
+        auto finalScores = mainScores;
 
         // perturbes scores to randomize tie handling
-        BOOST_FOREACH (long & i, finalScores)
+        // BOOST_FOREACH (long & i, finalScores)
+        for(auto& i: finalScores)
             i += (random() % 100);
 
         // prints the final scores, for debugging convenience
@@ -111,8 +113,8 @@ namespace Bastet {
         // line, you keep getting that). This is bad, since it would break the
         // "plausibility" of the sequence you get. We need a correction.
 
-        boost::array<long, nBlockTypes> temp(finalScores);
-        sort(temp.begin(), temp.end());
+        std::array<long, nBlockTypes> temp(finalScores);
+        std::sort(temp.begin(), temp.end());
 
         // always returns the worst block if it's different from the last one
         auto worstblock = find(finalScores.begin(), finalScores.end(), temp[0])
@@ -122,7 +124,7 @@ namespace Bastet {
         }
 
         // otherwise, returns the pos-th block, where pos is random
-        static const boost::array<int, nBlockTypes> blockPercentages
+        static const std::array<int, nBlockTypes> blockPercentages
             = {{80, 92, 98, 100, 100, 100, 100}};
         auto pos = find_if(blockPercentages.begin(), blockPercentages.end(),
                            bind2nd(greater_equal<int>(), random() % 100))
@@ -161,7 +163,7 @@ namespace Bastet {
 
     BestScoreVisitor::BestScoreVisitor(int bonusLines)
         : _score(GameOverScore), _bonusLines(bonusLines){};
-    BestScoreVisitor::~BestScoreVisitor(){};
+
     void BestScoreVisitor::Visit(BlockType b, const Well * w, Vertex v) {
         Well w2(*w);  // copy
         try {
@@ -171,8 +173,6 @@ namespace Bastet {
         } catch (const GameOver & go) {}
     }
 
-    RecursiveVisitor::RecursiveVisitor() { _scores.assign(GameOverScore); }
-    RecursiveVisitor::~RecursiveVisitor() {}
     void RecursiveVisitor::Visit(BlockType b, const Well * w, Vertex v) {
         Well w2(*w);  // copy
         try {
@@ -216,7 +216,7 @@ namespace Bastet {
     BlockType NoPreviewBlockChooser::GetNext(const Well *  well,
                                              const Queue & q) {
         assert(q.empty());
-        boost::array<long, nBlockTypes> finalScores;
+        std::array<long, nBlockTypes> finalScores;
         for (size_t t = 0; t < nBlockTypes; ++t) {
             BestScoreVisitor v;
             Searcher         searcher(BlockType(t), well, BlockPosition(), &v);
@@ -224,14 +224,15 @@ namespace Bastet {
         }
 
         // perturbes scores to randomize tie handling
-        BOOST_FOREACH (long & i, finalScores) { i += (random() % 100); }
+        //BOOST_FOREACH (long & i, finalScores) { i += (random() % 100); }
+        for(auto & i : finalScores) { i += random() % 100; }
 
         // sorts
-        boost::array<long, nBlockTypes> temp(finalScores);
-        sort(temp.begin(), temp.end());
+        std::array<long, nBlockTypes> temp(finalScores);
+        std::sort(temp.begin(), temp.end());
 
         // returns the pos-th block, where pos is random
-        static const boost::array<int, nBlockTypes> blockPercentages
+        static const std::array<int, nBlockTypes> blockPercentages
             = {{80, 92, 98, 100, 100, 100, 100}};
         auto pos = find_if(blockPercentages.begin(), blockPercentages.end(),
                            bind2nd(greater_equal<int>(), random() % 100))

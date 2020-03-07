@@ -19,6 +19,8 @@
 #ifndef BASTET_BLOCK_CHOOSER_HPP
 #define BASTET_BLOCK_CHOOSER_HPP
 
+#include <array>
+
 #include <boost/functional/hash.hpp>
 #include <boost/unordered_set.hpp>
 
@@ -49,13 +51,14 @@ namespace Bastet {
     // block reaches the best score along the drop positions
     class RecursiveVisitor : public WellVisitor {
        public:
-        RecursiveVisitor();
-        virtual ~RecursiveVisitor();
+        RecursiveVisitor() { _scores.fill(GameOverScore); }
+        virtual ~RecursiveVisitor() noexcept override = default;
         virtual void Visit(BlockType b, const Well * well, Vertex v);
-        const boost::array<long, 7> & GetScores() const { return _scores; }
+
+        using ScoresList = std::array<long, 7>;
+        const ScoresList & GetScores() const { return _scores; }
 
        private:
-        typedef boost::array<long, 7> ScoresList;
         ScoresList                    _scores;
     };
 
@@ -63,7 +66,7 @@ namespace Bastet {
     class BestScoreVisitor : public WellVisitor {
        public:
         explicit BestScoreVisitor(int bonusLines = 0);
-        virtual ~BestScoreVisitor();
+        virtual ~BestScoreVisitor() noexcept override = default;
         virtual void Visit(BlockType b, const Well * well, Vertex v);
         long         GetScore() const { return _score; }
 
@@ -102,7 +105,7 @@ namespace Bastet {
          * all possible positions and choosing the one that has the least
          * max_(drop positions) Evaluate(well)
          */
-        boost::array<long, 7> ComputeMainScores(const Well * well,
+        std::array<long, 7> ComputeMainScores(const Well * well,
                                                 BlockType    currentBlock);
 
        private:
