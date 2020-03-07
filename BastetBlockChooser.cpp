@@ -35,18 +35,19 @@ using namespace std;
 using namespace boost;
 
 namespace Bastet {
-    long Evaluate(const Well * w, int extralines) {
+    
         // computes the score for a final position reached in the well +
         // "extralines" lines cleared high=good for the player
+    long Evaluate(const Well * w, int extralines) {
 
         // lines
-        long score = 100000000 * extralines;
+        auto score = 100000000l * extralines;
 
         // adds a bonus for each "free" dot above the occupied blocks profile
-        std::bitset<WellWidth> occupied;
-        occupied.reset();
-        BOOST_FOREACH (WellLine l, w->_well) {
-            occupied = occupied & l;
+        std::bitset<WellWidth> occupied{};
+        /*BOOST_FOREACH (WellLine l, w->_well)*/ 
+        for(auto l : w->_well) {
+            occupied &= l;
             score += 10000 * (WellWidth - occupied.count());
         }
 
