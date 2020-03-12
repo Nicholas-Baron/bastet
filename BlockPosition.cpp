@@ -18,9 +18,10 @@
 
 #include "BlockPosition.hpp"
 
+#include <algorithm>
+
 #include "Block.hpp"
 #include "Well.hpp"
-#include "boost/foreach.hpp"
 
 namespace Bastet {
     const DotMatrix BlockPosition::GetDots(BlockType b) const {
@@ -67,10 +68,9 @@ namespace Bastet {
     }
 
     bool BlockPosition::IsOutOfScreen(BlockType bt) const {
-        /*BOOST_FOREACH (const Dot & d, GetDots(bt)) {*/
-        for (const auto & d : GetDots(bt))
-            if (d.y >= 0) return false;
-        return true;
+        const auto dots = GetDots(bt);
+        return std::none_of(dots.begin(), dots.end(),
+                            [](const Dot & d) { return d.y >= 0; });
     }
 
 }  // namespace Bastet
