@@ -18,8 +18,8 @@
 
 #include "Ui.hpp"
 
+#include <algorithm>
 #include <boost/algorithm/string.hpp>
-#include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include <cstdio>
 #include <cstdlib>
@@ -42,11 +42,11 @@ namespace Bastet {
 
     void voidendwin() { endwin(); }
 
-    void PrepareUiGetch() {  /// gets ready for a getch() in the UI, i.e.
-                             /// empties the char buffer, sets blocking IO
+    /// gets ready for a getch() in the UI, i.e.
+    /// empties the char buffer, sets blocking IO
+    void PrepareUiGetch() {
         nodelay(stdscr, TRUE);
-        while (getch() != ERR)
-            ;
+        while (getch() != ERR) {}
         nodelay(stdscr, FALSE);
     }
 
@@ -108,7 +108,7 @@ namespace Bastet {
     }
 
     Curses::Curses() {
-        if (initscr() == NULL) {
+        if (initscr() == nullptr) {
             fprintf(stderr,
                     "bastet: error while initializing graphics (ncurses "
                     "library).\n");
@@ -153,7 +153,7 @@ namespace Bastet {
         init_pair(22, COLOR_WHITE, COLOR_BLACK);   // end of line animation
 
         /* Set random seed. */
-        srandom(time(NULL) + 37);
+        srandom(time(nullptr) + 37);
     }
 
     Ui::Ui()
@@ -161,24 +161,23 @@ namespace Bastet {
         , _wellWin(WellHeight, 2 * WellWidth)
         , _nextWin(5, 14, _wellWin.GetMinY(), _wellWin.GetMaxX() + 1)
         , _scoreWin(7, 14, _nextWin.GetMaxY(), _nextWin.GetMinX()) {
-        BOOST_FOREACH (ColorWellLine & a, _colors)
-            a.assign(0);
+        for (auto & array : _colors) array.fill(0);
     }
 
-    Dot BoundingRect(
-        const std::string & message) {  // returns x and y of the minimal
-                                        // rectangle containing the given string
+    // returns x and y of the minimal
+    // rectangle containing the given string
+    Dot BoundingRect(const std::string & message) {
         vector<string> splits;
         split(splits, message, is_any_of("\n"));
         size_t maxlen = 0;
-        BOOST_FOREACH (string & s, splits) { maxlen = max(maxlen, s.size()); }
-        return (Dot){int(maxlen + 1), int(splits.size())};
+        for (const auto & s : splits) maxlen = std::max(maxlen, s.size());
+        return {int(maxlen + 1), int(splits.size())};
     }
 
     void Ui::MessageDialog(const std::string & message) {
         RedrawStatic();
 
-        Dot d = BoundingRect(message);
+        auto d = BoundingRect(message);
 
         BorderedWindow w(d.y, d.x);
         wattrset((WINDOW *)w, COLOR_PAIR(20));
@@ -186,10 +185,13 @@ namespace Bastet {
         w.RedrawBorder();
         wrefresh(w);
         PrepareUiGetch();
-        int ch;
-        do {
-            ch = getch();
-        } while (ch != ' ' && ch != 13);  // 13=return key!=KEY_ENTER, it seems
+        {
+            int ch;
+            do {
+                ch = getch();
+                // 13=return key!=KEY_ENTER, it seems
+            } while (ch != ' ' && ch != 13);
+        }
     }
 
     std::string Ui::InputDialog(const std::string & message) {
@@ -209,13 +211,13 @@ namespace Bastet {
         mvwgetnstr(w, d.y - 2, 1, buf, 50);
         curs_set(0);
         noecho();
-        return string(buf);
+        return buf;
     }
 
     int Ui::KeyDialog(const std::string & message) {
         RedrawStatic();
 
-        Dot d = BoundingRect(message);
+        auto d = BoundingRect(message);
 
         BorderedWindow w(d.y, d.x);
         wattrset((WINDOW *)w, COLOR_PAIR(20));
@@ -229,11 +231,10 @@ namespace Bastet {
     int Ui::MenuDialog(const vector<string> & choices) {
         RedrawStatic();
         size_t width = 0;
-        BOOST_FOREACH (const string & s, choices) {
-            width = max(width, s.size());
-        }
 
-        Dot            d = {int(width + 5), int(choices.size())};
+        for (const auto & s : choices) { width = max(width, s.size()); }
+
+        Dot            d{int(width + 5), int(choices.size())};
         BorderedWindow w(d.y, d.x);
         wattrset((WINDOW *)w, COLOR_PAIR(20));
         for (size_t i = 0; i < choices.size(); ++i) {
@@ -243,13 +244,11 @@ namespace Bastet {
         wrefresh(w);
         PrepareUiGetch();
         size_t chosen = 0;
-        int    ch;
-        bool   done = false;
+        bool   done   = false;
         mvwprintw(w, chosen, 1, "-> ");
         wrefresh(w);
         do {
-            ch = getch();
-            switch (ch) {
+            switch (getch()) {
                 case KEY_UP:
                     if (chosen == 0) break;
                     mvwprintw(w, chosen, 1, "   ");
@@ -275,7 +274,7 @@ namespace Bastet {
 
     void Ui::ChooseLevel() {
         RedrawStatic();
-        int    ch = '0';
+        char   ch = 0;
         format fmt(
             "    Get ready!\n"
             " \n"
@@ -322,7 +321,7 @@ namespace Bastet {
 
     // must be <1E+06, because it should fit into a timeval usec field(see man
     // select)
-    static const boost::array<int, 10> delay
+    static const std::array<int, 10> delay
         = {{999999, 770000, 593000, 457000, 352000, 271000, 208000, 160000,
             124000, 95000}};
 
@@ -340,9 +339,9 @@ namespace Bastet {
         BlockPosition p;
 
         RedrawWell(w, b, p);
-        Keys * keys = config.GetKeys();
+        auto * keys = config.GetKeys();
 
-        while (1) {  // break = tetromino locked
+        while (true) {  // break = tetromino locked
             tmp_in      = in;
             int sel_ret = select(FD_SETSIZE, &tmp_in, NULL, NULL, &time);
             if (sel_ret == 0) {  // timeout
@@ -350,7 +349,7 @@ namespace Bastet {
                 time.tv_sec  = 0;
                 time.tv_usec = delay[_level];
             } else {  // keypress
-                int ch = getch();
+                auto ch = getch();
                 if (ch == keys->Left)
                     p.MoveIfPossible(Left, b, w);
                 else if (ch == keys->Right)
@@ -387,7 +386,8 @@ namespace Bastet {
 
         LinesCompleted lc = w->Lock(b, p);
         // locks also into _colors
-        BOOST_FOREACH (const Dot & d, p.GetDots(b))
+
+        for (const auto & d : p.GetDots(b))
             if (d.y >= 0) _colors[d.y + 2][d.x] = GetColor(b);
 
         RedrawWell(w, b, p);
@@ -397,9 +397,9 @@ namespace Bastet {
             // clears also _colors
             ColorWell::reverse_iterator it
                 = lc.Clear(_colors.rbegin(), _colors.rend());
-            for (; it != _colors.rend(); ++it) { it->assign(0); }
+            for (; it != _colors.rend(); ++it) { it->fill(0); }
 
-            int newlines = lc._completed.count();
+            const auto newlines = lc._completed.count();
             if (((_lines + newlines) / 10 - _lines / 10 != 0) && _level < 9) {
                 _level++;
             }
@@ -427,12 +427,11 @@ namespace Bastet {
                         const BlockPosition & p) {
         for (int i = 0; i < WellWidth; ++i)
             for (int j = 0; j < WellHeight; ++j) {
-                Dot d = {i, j};
+                Dot d{i, j};
                 _wellWin.DrawDot(d, _colors[j + 2][i]);
             }
 
-        BOOST_FOREACH (const Dot & d, p.GetDots(b))
-            _wellWin.DrawDot(d, GetColor(b));
+        for (const auto & d : p.GetDots(b)) _wellWin.DrawDot(d, GetColor(b));
 
         wrefresh(_wellWin);
     }
@@ -447,9 +446,9 @@ namespace Bastet {
         wmove((WINDOW *)_nextWin, 1, 0);
         wclrtobot((WINDOW *)_nextWin);
 
-        BlockPosition p((Dot){2, 2});
-        BOOST_FOREACH (const Dot & d, p.GetDots(b))
-            _nextWin.DrawDot(d, GetColor(b));
+        BlockPosition p(Dot{2, 2});
+
+        for (const auto & d : p.GetDots(b)) _nextWin.DrawDot(d, GetColor(b));
         wrefresh(_nextWin);
     }
 
@@ -461,7 +460,6 @@ namespace Bastet {
         wattrset((WINDOW *)_scoreWin, COLOR_PAIR(19));
         mvwprintw(_scoreWin, 5, 7, "%6d", _level);
         wrefresh(_scoreWin);
-        return;
     }
 
     void Ui::CompletedLinesAnimation(const LinesCompleted & completed) {
@@ -482,8 +480,8 @@ namespace Bastet {
         _level  = 0;
         _points = 0;
         _lines  = 0;
-        BOOST_FOREACH (ColorWellLine & a, _colors)
-            a.assign(0);
+
+        for (auto & array : _colors) array.fill(0);
         RedrawStatic();
         RedrawScore();
         Well w;
@@ -493,10 +491,11 @@ namespace Bastet {
             ClearNext();
         try {
             while (true) {
-                while (getch() != ERR)
-                    ;  // ignores the keys pressed during the next block
-                       // calculation
-                BlockType current = q.front();
+                // ignores the keys pressed during the next block
+                // calculation
+                while (getch() != ERR) {}
+
+                auto current = q.front();
                 q.pop();
                 if (!q.empty()) RedrawNext(q.front());
                 DropBlock(current, &w);
@@ -507,7 +506,7 @@ namespace Bastet {
     }
 
     void Ui::HandleHighScores(difficulty_t diff) {
-        HighScores * hs = config.GetHighScores(diff);
+        auto * hs = config.GetHighScores(diff);
         if (hs->Qualifies(_points)) {
             string name = InputDialog(
                 " Congratulations! You got a high score \n Please enter your "
@@ -523,22 +522,21 @@ namespace Bastet {
     }
 
     void Ui::ShowHighScores(difficulty_t diff) {
-        HighScores * hs = config.GetHighScores(diff);
-        string       allscores;
+        auto * hs = config.GetHighScores(diff);
+        string allscores;
         if (diff == difficulty_normal)
             allscores += "**Normal difficulty**\n";
         else if (diff == difficulty_hard)
             allscores += "**Hard difficulty**\n";
         format fmt("%-20.20s %8d\n");
-        for (HighScores::reverse_iterator it = hs->rbegin(); it != hs->rend();
-             ++it) {
+        for (auto it = hs->rbegin(); it != hs->rend(); ++it) {
             allscores += str(fmt % it->Scorer % it->Score);
         }
         MessageDialog(allscores);
     }
 
     void Ui::CustomizeKeys() {
-        Keys * keys = config.GetKeys();
+        auto * keys = config.GetKeys();
         format fmt(
             "Press the key you wish to use for:\n\n"
             "%=1.34s\n\n");

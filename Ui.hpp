@@ -29,8 +29,10 @@
 #include "Well.hpp"
 
 namespace Bastet {
-    typedef std::pair<int, int> Score;  //(points, lines)
-    Score &                     operator+=(Score & a, const Score & b);
+    //(points, lines)
+    using Score = std::pair<int, int>;
+
+    Score & operator+=(Score & a, const Score & b);
 
     class BorderedWindow {
        private:
@@ -38,13 +40,14 @@ namespace Bastet {
         WINDOW * _border;
 
        public:
-        BorderedWindow(int height, int width, int y = -1,
-                       int x
-                       = -1);  /// w and h are "inner" dimensions, excluding the
-                               /// border. y and x are "outer", including the
-                               /// border. y=-1,x=-1 means "center"
+        /// w and h are "inner" dimensions, excluding the
+        /// border. y and x are "outer", including the
+        /// border. y=-1,x=-1 means "center"
+        BorderedWindow(int height, int width, int y = -1, int x = -1);
+
         ~BorderedWindow();
-             operator WINDOW *();  // returns the inner window
+        // returns the inner window
+             operator WINDOW *();
         void RedrawBorder();
         int  GetMinX();  /// these are including border
         int  GetMinY();
@@ -97,9 +100,9 @@ namespace Bastet {
          * this is a kind of "well" structure to store the colors used to draw
          * the blocks.
          */
-        typedef boost::array<Color, WellWidth>              ColorWellLine;
-        typedef boost::array<ColorWellLine, RealWellHeight> ColorWell;
-        ColorWell                                           _colors;
+        using ColorWellLine = std::array<Color, WellWidth>;
+        using ColorWell     = std::array<ColorWellLine, RealWellHeight>;
+        ColorWell _colors;
     };
 }  // namespace Bastet
 
