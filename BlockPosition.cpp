@@ -49,7 +49,7 @@ namespace Bastet {
 
     bool BlockPosition::MoveIfPossible(Movement m, BlockType b,
                                        const Well * w) {
-        BlockPosition p(*this);
+        auto p = *this;
         p.Move(m);
         if (p.IsValid(b, w)) {
             *this = p;
@@ -63,14 +63,13 @@ namespace Bastet {
     }
 
     void BlockPosition::Drop(BlockType bt, const Well * w) {
-        while (MoveIfPossible(Down, bt, w))
-            ;
+        while (MoveIfPossible(Down, bt, w)) {}
     }
 
     bool BlockPosition::IsOutOfScreen(BlockType bt) const {
-        BOOST_FOREACH (const Dot & d, GetDots(bt)) {
+        /*BOOST_FOREACH (const Dot & d, GetDots(bt)) {*/
+        for (const auto & d : GetDots(bt))
             if (d.y >= 0) return false;
-        }
         return true;
     }
 

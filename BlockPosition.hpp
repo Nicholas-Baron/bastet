@@ -36,7 +36,7 @@ namespace Bastet {
         Orientation _orientation;
 
        public:
-        BlockPosition(Dot d = (Dot){3, -2}, Orientation o = Orientation())
+        BlockPosition(Dot d = Dot{3, -2}, Orientation o = Orientation{})
             : _pos(d), _orientation(o){};
         bool operator==(const BlockPosition & p) const {
             return _pos == p._pos && _orientation == p._orientation;
