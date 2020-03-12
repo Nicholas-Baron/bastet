@@ -33,10 +33,10 @@ namespace Bastet {
     class BlockChooser {
        public:
         virtual ~BlockChooser() = default;
-        virtual Queue GetStartingQueue()
-            = 0;  // chooses first blocks after a game starts
-        virtual BlockType GetNext(const Well * well, const Queue & q)
-            = 0;  // chooses next block
+        // chooses first blocks after a game starts
+        virtual Queue GetStartingQueue() = 0;
+        // chooses next block
+        virtual BlockType GetNext(const Well * well, const Queue & q) = 0;
     };
 
     /// the usual Tetris random block chooser, for testing purposes

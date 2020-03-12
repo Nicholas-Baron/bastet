@@ -19,7 +19,6 @@
 #include "BastetBlockChooser.hpp"
 
 #include <algorithm>
-#include <boost/foreach.hpp>
 #include <cstdlib>
 
 #include "Block.hpp"
@@ -35,26 +34,23 @@ using namespace std;
 using namespace boost;
 
 namespace Bastet {
-    
-        // computes the score for a final position reached in the well +
-        // "extralines" lines cleared high=good for the player
-    long Evaluate(const Well * w, int extralines) {
 
+    // computes the score for a final position reached in the well +
+    // "extralines" lines cleared high=good for the player
+    long Evaluate(const Well * w, int extralines) {
         // lines
         auto score = 100000000l * extralines;
 
         // adds a bonus for each "free" dot above the occupied blocks profile
         std::bitset<WellWidth> occupied{};
-        /*BOOST_FOREACH (WellLine l, w->_well)*/ 
-        for(auto l : w->_well) {
+        for (auto l : w->_well) {
             occupied &= l;
             score += 10000 * (WellWidth - occupied.count());
         }
 
         // adds a bonus for lower max height of the occupied blocks
         auto height = RealWellHeight;
-        /*BOOST_FOREACH (WellLine l, w->_well)*/
-        for(auto l : w->_well){
+        for (auto l : w->_well) {
             if (l.any()) break;
             height--;
         }
@@ -94,14 +90,11 @@ namespace Bastet {
     }
 
     BlockType BastetBlockChooser::GetNext(const Well * well, const Queue & q) {
-        auto mainScores
-            = ComputeMainScores(well, q.front());
+        auto mainScores  = ComputeMainScores(well, q.front());
         auto finalScores = mainScores;
 
         // perturbes scores to randomize tie handling
-        // BOOST_FOREACH (long & i, finalScores)
-        for(auto& i: finalScores)
-            i += (random() % 100);
+        for (auto & i : finalScores) i += (random() % 100);
 
         // prints the final scores, for debugging convenience
         for (size_t i = 0; i < nBlockTypes; ++i) {
@@ -224,8 +217,7 @@ namespace Bastet {
         }
 
         // perturbes scores to randomize tie handling
-        //BOOST_FOREACH (long & i, finalScores) { i += (random() % 100); }
-        for(auto & i : finalScores) { i += random() % 100; }
+        for (auto & i : finalScores) { i += random() % 100; }
 
         // sorts
         std::array<long, nBlockTypes> temp(finalScores);

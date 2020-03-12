@@ -43,31 +43,24 @@ namespace Bastet {
             return (Score == b.Score) && (Scorer == b.Scorer);
         }
     };
-    
- // how many high scores to save in the file
-    extern const size_t
-        HowManyHighScores; 
+
+    // how many high scores to save in the file
+    extern const size_t HowManyHighScores;
 
     enum difficulty_t {
         difficulty_normal = 0,
         difficulty_hard   = 1,
         num_difficulties  = 2
     };
-    
-// a set would not do the right job
-// (think to ties)
-    class HighScores
-        : public std::vector<HighScore> {  
-                                           
+
+    // a set would not do the right job
+    // (think to ties)
+    class HighScores : public std::vector<HighScore> {
        public:
         bool Qualifies(int score);
-// returns position (1 to HowManyHighScores), -1 if
-// you don't make into the list
-        int  InsertHighScore(
-             int score,
-             const std::string &
-                 scorer);  
-                           
+        // returns position (1 to HowManyHighScores), -1 if
+        // you don't make into the list
+        int InsertHighScore(int score, const std::string & scorer);
     };
 
     extern const std::string RcFileName;

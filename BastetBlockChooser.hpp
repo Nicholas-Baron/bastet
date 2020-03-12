@@ -20,7 +20,6 @@
 #define BASTET_BLOCK_CHOOSER_HPP
 
 #include <array>
-
 #include <boost/functional/hash.hpp>
 #include <boost/unordered_set.hpp>
 
@@ -59,7 +58,7 @@ namespace Bastet {
         const ScoresList & GetScores() const { return _scores; }
 
        private:
-        ScoresList                    _scores;
+        ScoresList _scores;
     };
 
     // returns the max score over all drop positions
@@ -106,7 +105,7 @@ namespace Bastet {
          * max_(drop positions) Evaluate(well)
          */
         std::array<long, 7> ComputeMainScores(const Well * well,
-                                                BlockType    currentBlock);
+                                              BlockType    currentBlock);
 
        private:
     };
