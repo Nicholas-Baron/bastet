@@ -497,10 +497,10 @@ namespace Bastet {
                     ;  // ignores the keys pressed during the next block
                        // calculation
                 BlockType current = q.front();
-                q.pop_front();
+                q.pop();
                 if (!q.empty()) RedrawNext(q.front());
                 DropBlock(current, &w);
-                q.push_back(bc->GetNext(&w, q));
+                q.push(bc->GetNext(&w, q));
             }
         } catch (GameOver & go) {}
         return;

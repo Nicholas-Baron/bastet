@@ -19,7 +19,7 @@
 #ifndef BLOCKCHOOSER_HPP
 #define BLOCKCHOOSER_HPP
 
-#include <deque>
+#include <queue>
 
 #include "Block.hpp"
 
@@ -27,7 +27,7 @@ namespace Bastet {
 
     class Well;
     // queue of blocks to appear on the screen
-    typedef std::deque<BlockType> Queue;
+    using Queue = std::queue<BlockType>;
 
     /// Abstract class to represent a block choosing algorithm
     class BlockChooser {

@@ -24,8 +24,8 @@ namespace Bastet {
 
     Queue RandomBlockChooser::GetStartingQueue() {
         Queue q;
-        q.push_back(BlockType(random() % nBlockTypes));
-        q.push_back(BlockType(random() % nBlockTypes));
+        q.push(BlockType(random() % nBlockTypes));
+        q.push(BlockType(random() % nBlockTypes));
         return q;
     }
 

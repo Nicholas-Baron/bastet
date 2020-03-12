@@ -81,8 +81,8 @@ namespace Bastet {
                 first = T;
                 break;
         }
-        q.push_back(first);
-        q.push_back(BlockType(random() % nBlockTypes));
+        q.push(first);
+        q.push(BlockType(random() % nBlockTypes));
         return q;
     }
 
@@ -209,7 +209,7 @@ namespace Bastet {
                 first = T;
                 break;
         }
-        q.push_back(first);
+        q.push(first);
         return q;
     }
 
