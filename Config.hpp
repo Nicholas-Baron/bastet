@@ -19,7 +19,7 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
-#include <boost/array.hpp>
+#include <array>
 #include <string>
 #include <vector>
 
@@ -45,7 +45,7 @@ namespace Bastet {
     };
 
     // how many high scores to save in the file
-    extern const size_t HowManyHighScores;
+    constexpr size_t HowManyHighScores = 10;
 
     enum difficulty_t {
         difficulty_normal = 0,
@@ -69,8 +69,8 @@ namespace Bastet {
 
     class Config {
        private:
-        Keys                                       _keys;
-        boost::array<HighScores, num_difficulties> _hs;
+        Keys                                     _keys;
+        std::array<HighScores, num_difficulties> _hs;
 
        public:
         Config();
