@@ -29,7 +29,8 @@ namespace Bastet {
     static constexpr int WellWidth      = 10;
     static constexpr int RealWellHeight = WellHeight + 2;
 
-    typedef int Color;  // to be given to wattrset
+    // to be given to wattrset
+    using Color = int;
 
     class Orientation {
        public:
@@ -99,8 +100,8 @@ namespace Bastet {
             }
         }
 
-        friend size_t hash_value(
-            const Dot & d);  // for use with boost::hash and unordered_set
+        // for use with boost::hash and unordered_set
+        friend size_t hash_value(const Dot & d);
     };
 
     class BlockImpl {
