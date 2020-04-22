@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.10)
 project(neobastet)
 
 find_package(Curses)
-find_package(Boost)
 
 add_executable(nbastet
     main.cpp 
@@ -17,6 +16,6 @@ add_executable(nbastet
     )
 
 set_property(TARGET nbastet PROPERTY CXX_STANDARD 11)
-target_link_libraries(nbastet PUBLIC ${CURSES_LIBRARIES} boost_program_options)
-target_include_directories(nbastet PUBLIC ${CURSES_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
+target_link_libraries(nbastet PUBLIC ${CURSES_LIBRARIES})
+target_include_directories(nbastet PUBLIC ${CURSES_INCLUDE_DIRS})
 target_compile_options(nbastet PRIVATE -Wall -Wextra -O)
